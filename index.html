@@ -7,7 +7,7 @@
     <style>
         :root {
             --purple-glow: #bc13fe;
-            --purple-dark: #0f051a;
+            --uranium-green: #4ef11a;
             --text-light: #f0eaff;
             --accent: #d199ff;
         }
@@ -16,91 +16,113 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: #000; color: var(--text-light);
             font-family: 'Inter', -apple-system, sans-serif;
-            overflow: hidden; /* Lock scroll until loaded */
+            overflow: hidden; /* Locked during load */
         }
 
-        /* --- LOADING OVERLAY --- */
+        /* --- LOADER --- */
         #loader {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 100; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .loader-text {
-            color: var(--purple-glow);
-            font-family: monospace;
-            letter-spacing: 5px;
-            animation: pulse 1.5s infinite;
+            color: var(--purple-glow); font-family: monospace; letter-spacing: 5px;
+            animation: pulse 1.5s infinite; margin-bottom: 20px;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* --- BACKGROUND --- */
+        /* --- DYNAMIC BACKGROUND --- */
         #bg-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0; pointer-events: none;
-            opacity: 0;
-            transition: opacity 2s ease;
+            z-index: 0; pointer-events: none; opacity: 0; 
+            transition: opacity 2.5s ease-in-out;
+            background: #000;
         }
 
         #bg-frame {
             width: 100%; height: 100%; border: none;
-            filter: brightness(0.4) saturate(1.3);
+            filter: brightness(0.4) saturate(1.2);
+            transform: scale(1.1);
+            transition: transform 0.3s ease-out;
         }
 
         /* --- CONTENT --- */
         .content-wrapper {
             position: relative; z-index: 10; min-height: 100vh;
-            background: linear-gradient(to bottom, rgba(15, 5, 26, 0.3), rgba(15, 5, 26, 0.7));
-            overflow-y: auto;
-            display: none; /* Hidden until bg is ready */
+            background: radial-gradient(circle at center, rgba(15, 5, 26, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+            overflow-y: auto; display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
         .container { max-width: 1000px; margin: 0 auto; padding: 80px 20px; text-align: center; }
 
-        header h1 {
-            font-size: 5rem; margin: 0;
-            text-shadow: 0 0 20px var(--purple-glow);
-            letter-spacing: -2px; font-family: monospace;
+        /* --- URANIUM TITLE --- */
+        @keyframes uraniumPulse {
+            0%, 100% { text-shadow: 0 0 15px var(--purple-glow), 0 0 5px var(--uranium-green); color: #fff; }
+            50% { text-shadow: 0 0 35px var(--purple-glow), 0 0 25px var(--uranium-green), 0 0 10px #fff; color: #e0ffcc; }
         }
 
-        .tagline { color: var(--accent); font-weight: bold; margin-bottom: 40px; font-size: 1.3rem; display: block; min-height: 1.5em; }
+        header h1 {
+            font-size: 5.5rem; margin: 0; letter-spacing: -3px; font-family: monospace;
+            animation: uraniumPulse 4s infinite ease-in-out;
+            cursor: default;
+        }
 
-        .bio-box, #repo-grid, h2 { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
+        .tagline { color: var(--accent); font-weight: bold; margin-bottom: 60px; font-size: 1.3rem; display: block; opacity: 0.8; }
+
+        /* --- STABLE PURPLE BOXES --- */
+        .bio-box, #repo-grid, h2 { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .visible { opacity: 1 !important; transform: translateY(0) !important; }
 
         .bio-box {
-            background: rgba(26, 11, 46, 0.6); backdrop-filter: blur(12px);
-            border: 1px solid rgba(188, 19, 254, 0.4); padding: 2.5rem;
-            border-radius: 20px; max-width: 700px; margin: 0 auto 60px;
+            background: rgba(26, 11, 46, 0.4); backdrop-filter: blur(20px);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            padding: 2.5rem; border-radius: 24px; max-width: 750px; margin: 0 auto 80px;
+            transition: all 0.4s ease;
+        }
+        
+        .bio-box:hover {
+            border-color: var(--purple-glow);
+            box-shadow: 0 0 40px rgba(188, 19, 254, 0.2);
+            background: rgba(26, 11, 46, 0.6);
         }
 
-        #repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        #repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 30px; }
+
         .repo-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px; padding: 25px; text-align: left; transition: 0.3s ease;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; padding: 30px; text-align: left;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; flex-direction: column; justify-content: space-between;
         }
-        .repo-card:hover { border-color: var(--purple-glow); background: rgba(188, 19, 254, 0.1); transform: translateY(-5px); }
-        .repo-links { display: flex; gap: 15px; margin-top: 15px; }
-        .btn { padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
-        .btn-github { background: rgba(255, 255, 255, 0.1); color: white; }
-        .btn-live { background: var(--purple-glow); color: white; }
+
+        .repo-card:hover {
+            background: rgba(188, 19, 254, 0.08);
+            border-color: var(--purple-glow);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(188, 19, 254, 0.2);
+        }
+
+        .repo-title { font-weight: bold; color: #fff; font-size: 1.3rem; margin-bottom: 10px; }
+        .repo-desc { color: #b0a0c4; font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; }
+
+        .repo-links { display: flex; gap: 15px; }
+        .btn { padding: 10px 20px; border-radius: 12px; text-decoration: none; font-size: 0.85rem; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-github { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-live { background: var(--purple-glow); color: white; box-shadow: 0 5px 15px rgba(188, 19, 254, 0.4); }
+
+        footer { margin-top: 120px; opacity: 0.3; font-size: 0.8rem; padding-bottom: 60px; }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-text">INITIALIZING...</div>
+        <div class="loader-text">INITIALIZING HEAVY ASSETS...</div>
+        <div id="load-status" style="font-size: 0.7rem; color: rgba(255,255,255,0.4); font-family: monospace;">WAITING FOR HANDSHAKE</div>
     </div>
 
     <div id="bg-container">
@@ -118,75 +140,100 @@
                 <div id="punchline">✨ "While you were still typing 'Hello,' I already refactored the weights."</div>
             </section>
 
-            <h2 id="repo-header" style="margin-bottom: 40px;">Current Deployments</h2>
+            <h2 id="repo-header" style="margin-bottom: 40px; letter-spacing: 4px; font-size: 0.9rem; opacity: 0.6;">SYSTEM_REPOS</h2>
             <div id="repo-grid"></div>
 
-            <footer style="margin-top: 80px; opacity: 0.4; font-size: 0.8rem;">
-                © 2026 hcBakeman. Terminal access granted.
-            </footer>
+            <footer>© 2026 hcBakeman // STATUS: BEST OF THE BEST</footer>
         </div>
     </div>
 
     <script>
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*$@0123456789";
-        
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789%&#$";
+        const punchlines = [
+            "While you were still typing 'Hello,' I already refactored the weights.",
+            "I don't just use AI; I provide the logic it was missing.",
+            "Prompt engineering isn't a hobby, it's a precision strike.",
+            "If it’s in the latent space, I’ve already found it."
+        ];
+
+        // Parallax
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            const bg = document.getElementById('bg-frame');
+            if (bg) bg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
+        });
+
         function decodeEffect(element) {
             let iteration = 0;
             const originalValue = element.dataset.value;
             let interval = setInterval(() => {
-                element.innerText = originalValue.split("").map((letter, index) => {
-                    if (index < iteration) return originalValue[index];
-                    return letters[Math.floor(Math.random() * 42)];
-                }).join("");
+                element.innerText = originalValue.split("").map((l, i) => i < iteration ? originalValue[i] : letters[Math.floor(Math.random() * letters.length)]).join("");
                 if (iteration >= originalValue.length) clearInterval(interval);
                 iteration += 1 / 3;
             }, 30);
         }
 
-        const punchlines = [
-            "While you were still typing 'Hello,' I already refactored the weights and fixed the hallucinations.",
-            "I don't just use AI; I provide the logic it was missing.",
-            "Prompt engineering isn't a hobby, it's a precision strike.",
-            "If it’s in the latent space, I’ve already found it, labeled it, and made it run 2x faster.",
-            "I whispered to the model and it confessed everything."
-        ];
-
         async function startSite() {
-            // Hide loader and show background/content
-            document.getElementById('loader').style.opacity = '0';
+            const loader = document.getElementById('loader');
+            const bgContainer = document.getElementById('bg-container');
+            const mainContent = document.getElementById('main-content');
+
+            document.getElementById('load-status').innerText = "COMPLETED";
+            
+            // 1. Fade loader
+            loader.style.opacity = '0';
+            
             setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('bg-container').style.opacity = '1';
-                document.getElementById('main-content').style.display = 'block';
-                document.body.style.overflow = 'auto'; // Re-enable scroll
-                
-                // Run animations
-                decodeEffect(document.getElementById('main-title'));
-                setTimeout(() => decodeEffect(document.getElementById('main-tagline')), 500);
+                loader.style.display = 'none';
+                // 2. Fade BG
+                bgContainer.style.opacity = '1';
+                // 3. Reveal Content
+                mainContent.style.display = 'block';
                 setTimeout(() => {
-                    document.getElementById('bio').classList.add('visible');
-                    document.getElementById('repo-header').classList.add('visible');
-                    document.getElementById('repo-grid').classList.add('visible');
-                }, 1200);
-            }, 1000);
+                    mainContent.style.opacity = '1';
+                    document.body.style.overflow = 'auto';
+                    decodeEffect(document.getElementById('main-title'));
+                    setTimeout(() => decodeEffect(document.getElementById('main-tagline')), 500);
+                    setTimeout(() => {
+                        document.getElementById('bio').classList.add('visible');
+                        document.getElementById('repo-header').classList.add('visible');
+                        document.getElementById('repo-grid').classList.add('visible');
+                    }, 1000);
+                }, 100);
+            }, 800);
         }
 
-        // --- THE "WAIT FOR BG" LOGIC ---
         const bgFrame = document.getElementById('bg-frame');
+        let isStarted = false;
 
-        // Try to detect when iframe is loaded
-        bgFrame.onload = function() {
-            startSite();
-        };
-
-        // Safety timeout: If background takes > 4s, load anyway so user isn't stuck
-        setTimeout(() => {
-            if (document.getElementById('loader').style.display !== 'none') {
-                startSite();
+        // Heavy Asset Load Logic
+        const checkLoad = setInterval(() => {
+            // Check if the iframe content is accessible and ready
+            try {
+                if (bgFrame.contentDocument.readyState === 'complete') {
+                    proceedToBoot();
+                }
+            } catch (e) {
+                // Cross-origin might block internal check, fallback to onload
             }
-        }, 4000);
+        }, 100);
 
-        // Fetch Repos in background
+        bgFrame.onload = () => proceedToBoot();
+
+        function proceedToBoot() {
+            if (!isStarted) {
+                isStarted = true;
+                clearInterval(checkLoad);
+                document.getElementById('load-status').innerText = "CALIBRATING TOKENS...";
+                // Mandatory buffer for JS execution inside the iframe
+                setTimeout(startSite, 1800); 
+            }
+        }
+
+        // Hard Safety Catch (7 seconds)
+        setTimeout(() => { if (!isStarted) proceedToBoot(); }, 7000);
+
         async function fetchRepos() {
             try {
                 const res = await fetch('https://api.github.com/users/hcBakeman/repos?sort=updated');
@@ -198,7 +245,7 @@
                     const card = document.createElement('div');
                     card.className = 'repo-card';
                     const liveLink = repo.homepage ? `<a href="${repo.homepage}" target="_blank" class="btn btn-live">Live Demo</a>` : '';
-                    card.innerHTML = `<div><div style="font-weight:bold; color:#fff; font-size:1.2rem;">${repo.name}</div><p style="color:#b0a0c4; font-size:0.9rem;">${repo.description || 'Classified info.'}</p></div><div class="repo-links"><a href="${repo.html_url}" target="_blank" class="btn btn-github">GitHub</a>${liveLink}</div>`;
+                    card.innerHTML = `<div><div class="repo-title">${repo.name}</div><p class="repo-desc">${repo.description || 'Accessing encrypted data...'}</p></div><div class="repo-links"><a href="${repo.html_url}" target="_blank" class="btn btn-github">GitHub</a>${liveLink}</div>`;
                     grid.appendChild(card);
                 });
             } catch (e) {}

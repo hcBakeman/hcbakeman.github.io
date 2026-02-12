@@ -44,9 +44,8 @@
 
         #bg-frame {
             width: 100%; height: 100%; border: none;
-            filter: brightness(0.4) saturate(1.2);
-            transform: scale(1.1);
-            transition: transform 0.3s ease-out;
+            filter: none;
+            transform: none;
         }
 
         /* --- CONTENT --- */
@@ -74,7 +73,7 @@
 
         .tagline { color: var(--accent); font-weight: bold; margin-bottom: 60px; font-size: 1.3rem; display: block; opacity: 0.8; }
 
-        /* --- STABLE PURPLE BOXES --- */
+        /* --- REPO CARDS & LAYOUT --- */
         .bio-box, #repo-grid, h2 { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .visible { opacity: 1 !important; transform: translateY(0) !important; }
 
@@ -94,21 +93,35 @@
         #repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 30px; }
 
         .repo-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; padding: 30px; text-align: left;
+            /* Consistent solid-color look from the start */
+            background: rgba(20, 20, 22, 0.95); 
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px; 
+            padding: 30px; 
+            text-align: left;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; justify-content: space-between;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
         }
 
         .repo-card:hover {
-            background: rgba(188, 19, 254, 0.08);
+            background: rgba(30, 25, 40, 0.98);
             border-color: var(--purple-glow);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(188, 19, 254, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(188, 19, 254, 0.15);
         }
 
-        .repo-title { font-weight: bold; color: #fff; font-size: 1.3rem; margin-bottom: 10px; }
-        .repo-desc { color: #b0a0c4; font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; }
+        .repo-title { 
+            font-weight: bold; color: #fff; font-size: 1.3rem; margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .repo-desc { 
+            color: #d1c4e9; font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
 
         .repo-links { display: flex; gap: 15px; }
         .btn { padding: 10px 20px; border-radius: 12px; text-decoration: none; font-size: 0.85rem; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
@@ -116,7 +129,6 @@
         .btn-github:hover { background: rgba(255, 255, 255, 0.2); }
         .btn-live { background: var(--purple-glow); color: white; box-shadow: 0 5px 15px rgba(188, 19, 254, 0.4); }
 
-        /* --- FOOTER & COUNTER --- */
         footer { margin-top: 120px; opacity: 0.4; font-size: 0.8rem; padding-bottom: 60px; }
         .counter-wrapper { margin-top: 20px; filter: hue-rotate(280deg) brightness(1.2) contrast(1.2); opacity: 0.7; transition: opacity 0.3s; }
         .counter-wrapper:hover { opacity: 1; }
@@ -131,7 +143,7 @@
     </div>
 
     <div id="bg-container">
-        <iframe id="bg-frame" src="https://hcbakeman.github.io/comfy/?m=bloom&c=500&s=0.1&z=13&h=300&ah=0&g=1&p=1&u=0&mh=0&mr=150&fst=poly&fs=0.3&fsp=0.1"></iframe>
+        <iframe id="bg-frame" src="https://hcbakeman.github.io/comfy/?m=bloom&c=1000&s=0.3&z=1&h=304&ah=0&g=1&gi=38&gr=3.6&p=1&u=0&mm=follow&mr=250&mst=0.6&fs=0.1&fsp=0.24&hb=4&bgs=black"></iframe>
     </div>
 
     <div class="content-wrapper" id="main-content">
@@ -153,8 +165,9 @@
                 <div class="counter-wrapper">
                     <span class="counter-label">NEURAL_NET_PENETRATIONS:</span>
                     <div id="sfcqrnne7j9sj1urm24nb2aaysjln3b7mh6"></div>
-<script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=qrnne7j9sj1urm24nb2aaysjln3b7mh6&down=async" async></script>
-<noscript><a href="https://www.freecounterstat.com" title="website counter code"><img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=qrnne7j9sj1urm24nb2aaysjln3b7mh6" border="0" title="website counter code" alt="website counter code"></a></noscript></div>
+                    <script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=qrnne7j9sj1urm24nb2aaysjln3b7mh6&down=async" async></script>
+                    <noscript><a href="https://www.freecounterstat.com" title="website counter code"><img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=qrnne7j9sj1urm24nb2aaysjln3b7mh6" border="0" title="website counter code" alt="website counter code"></a></noscript>
+                </div>
             </footer>
         </div>
     </div>
@@ -167,14 +180,6 @@
             "Prompt engineering isn't a hobby, it's a precision strike.",
             "If it’s in the latent space, I’ve already found it."
         ];
-
-        // Parallax
-        document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            const bg = document.getElementById('bg-frame');
-            if (bg) bg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
-        });
 
         function decodeEffect(element) {
             let iteration = 0;
@@ -214,26 +219,17 @@
         const bgFrame = document.getElementById('bg-frame');
         let isStarted = false;
 
-        const checkLoad = setInterval(() => {
-            try {
-                if (bgFrame.contentDocument.readyState === 'complete') {
-                    proceedToBoot();
-                }
-            } catch (e) {}
-        }, 100);
-
         bgFrame.onload = () => proceedToBoot();
 
         function proceedToBoot() {
             if (!isStarted) {
                 isStarted = true;
-                clearInterval(checkLoad);
                 document.getElementById('load-status').innerText = "CALIBRATING RENDERER...";
                 setTimeout(startSite, 1800); 
             }
         }
 
-        setTimeout(() => { if (!isStarted) proceedToBoot(); }, 7000);
+        setTimeout(() => { if (!isStarted) proceedToBoot(); }, 5000);
 
         async function fetchRepos() {
             try {
